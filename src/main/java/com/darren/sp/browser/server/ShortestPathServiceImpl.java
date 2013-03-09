@@ -1,10 +1,8 @@
 package com.darren.sp.browser.server;
 
-import com.darren.sp.BruteForcePathCalculator;
+import com.darren.sp.Path;
 import com.darren.sp.Point;
-import com.darren.sp.ThreadFactory;
 import com.darren.sp.browser.client.ShortestPathService;
-import com.google.appengine.api.ThreadManager;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import java.util.ArrayList;
@@ -15,8 +13,8 @@ import java.util.List;
 public class ShortestPathServiceImpl extends RemoteServiceServlet implements ShortestPathService {
 
     public List<com.darren.sp.browser.shared.Point> calculateShortestPath(com.darren.sp.browser.shared.Point startPoint, List<com.darren.sp.browser.shared.Point> points) {
-        BruteForcePathCalculator<Point> pathCalculator = new BruteForcePathCalculator<Point>();
-        List<Point> result = pathCalculator.shortestPathSequence(convert(startPoint), convertTo(points));
+        Path<Point> path= new Path<Point>();
+        List<Point> result = path.getShortestPath(convert(startPoint), convertTo(points));
         return convertFrom(result);
     }
 

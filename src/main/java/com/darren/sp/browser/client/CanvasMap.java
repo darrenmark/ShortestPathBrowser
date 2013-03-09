@@ -22,6 +22,7 @@ class CanvasMap implements IsWidget{
     private List<Point> canvasRelativePoints = new ArrayList<Point>();
     private boolean linesHaveBeenDrawn = false;
     private TextButton generateButton;
+    private final int MAX_POINTS_ALLOWED = 100;
 
     CanvasMap(TextButton generateButton) {
         this.generateButton = generateButton;
@@ -86,8 +87,8 @@ class CanvasMap implements IsWidget{
             Window.alert("You cannot a add a point once path has been generated");
             return;
         }
-        if(canvasRelativePoints.size() > 9) {
-            Window.alert("Max 9 point are allowed");
+        if(canvasRelativePoints.size() > MAX_POINTS_ALLOWED) {
+            Window.alert("Max " + MAX_POINTS_ALLOWED + " point are allowed.");
             return;
         }
         generateButton.setEnabled(true);
@@ -133,11 +134,16 @@ class CanvasMap implements IsWidget{
 
     void drawLines(List<Point> gridRelatedPoints) {
         linesHaveBeenDrawn = true;
-        Point lastPoint = new Point(getCanvasWidth()/2, getCanvasHeight()/2);
+        Point lastPoint = getStartPoint();
         for(Point point: getCanvasRelativePoints(gridRelatedPoints)) {
             drawLine(lastPoint, point);
             lastPoint = point;
         }
+        drawLine(lastPoint, getStartPoint());
+    }
+
+    private Point getStartPoint() {
+        return new Point(getCanvasWidth()/2, getCanvasHeight()/2);
     }
 
     private void drawLine(Point point1, Point point2) {
